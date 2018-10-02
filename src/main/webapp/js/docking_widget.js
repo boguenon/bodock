@@ -25,16 +25,16 @@ IG$.dockingWidget = function(owner, docid, config) {
 		position: "absolute", 
 		width: (IG$.x_10/*jqueryExtension*/._w(owner.box) || 100), 
 		height: (IG$.x_10/*jqueryExtension*/._h(owner.box) || 100)
-	}).dselect();
-	me.binner = $("<div class='dock_inner'></div>").appendTo(me.box).dselect();
-	me.box_title = $("<div class='dock_title doc_title_normal'></div>").appendTo(me.binner).dselect();
+	});
+	me.binner = $("<div class='dock_inner'></div>").appendTo(me.box);
+	me.box_title = $("<div class='dock_title doc_title_normal'></div>").appendTo(me.binner);
 	$("<div class='dock_title_icon'></div>").appendTo(me.box_title);
 	$("<div class='dock_title_text'><span id='dock_title_text'>&nbsp;</span></div>").appendTo(me.box_title);
 	me.btnarea = btnarea = $("<div class='dock_title_btnarea'></div>").appendTo(me.box_title);
 	
 	me.btnmap = {};
 	
-	me.box_container = $("<div class='dock_content'></div>").appendTo(me.binner).dselect();
+	me.box_container = $("<div class='dock_content'></div>").appendTo(me.binner);
 	
 	config = config || {};
 	config.draggable != false && me.box.draggable({
@@ -109,205 +109,13 @@ IG$.dockingWidget.prototype = {
 			mbtns = btns || [],
 			owner = me.owner,
 			btnarea = me.btnarea,
+			sheet_toolbar,
 			btnmap,
-			sheet_toolbar = ig$.sheet_toolbar,
 			i;
 		
 		btnmap = me.btnmap = {};
 		btnarea.empty();
-		
-		if (me.objtype == "SHEET")
-		{
-			mbtns.push({
-				name: "viewgrid",
-				hidden: true,
-				cls: "idv-dk-btn-vgrid",
-				handler: function(panel) {
-					var p = this;
-					p.view.updateViewMode.call(p.view, "grid");
-				},
-				scope: me
-			});
-		
-			mbtns.push({
-				name: "viewchart",
-				hidden: true,
-				cls: "idv-dk-btn-vchart",
-				handler: function(panel) {
-					var p = this;
-					p.view.updateViewMode.call(p.view, "chart");
-				},
-				scope: me
-			});
-
-			mbtns.push({
-				name: "viewrstat",
-				hidden: true,
-				cls: "idv-dk-btn-vrstat",
-				handler: function(panel) {
-					var p = this;
-					p.view.updateViewMode.call(p.view, "r");
-				},
-				scope: me
-			});
-		}
-		
-		mbtns.push({
-			name: "exp_excel",
-			hidden: true,
-			cls: "idv-dk-btn-e-xls",
-			handler: function(panel) {
-				var p = this;
-				p.view.exportSheet.call(p.view, "EXCEL");
-			},
-			scope: me
-		});
-
-		mbtns.push({
-			name: "exp_pdf",
-			hidden: true,
-			cls: "idv-dk-btn-e-pdf",
-			handler: function(panel) {
-				var p = this;
-				p.view.exportSheet.call(p.view, "PDF");
-			},
-			scope: me
-		});
-		
-		mbtns.push({
-			name: "jasper_excel",
-			hidden: true,
-			cls: "idv-dk-btn-e-xls",
-			handler: function(panel) {
-				var p = this;
-				p.view.exportSheet.call(p.view, "JASPER_EXCEL");
-			},
-			scope: me
-		});
-
-		mbtns.push({
-			name: "jasper_pdf",
-			hidden: true,
-			cls: "idv-dk-btn-e-pdf",
-			handler: function(panel) {
-				var p = this;
-				p.view.exportSheet.call(p.view, "JASPER_PDF");
-			},
-			scope: me
-		});
-		
-		mbtns.push({
-			name: "jasper_ppt",
-			hidden: true,
-			cls: "idv-dk-btn-e-pdf",
-			handler: function(panel) {
-				var p = this;
-				p.view.exportSheet.call(p.view, "JASPER_PPT");
-			},
-			scope: me
-		});
-		
-		mbtns.push({
-			name: "jasper_docx",
-			hidden: true,
-			cls: "idv-dk-btn-e-pdf",
-			handler: function(panel) {
-				var p = this;
-				p.view.exportSheet.call(p.view, "JASPER_DOCX");
-			},
-			scope: me
-		});
-		
-		mbtns.push({
-			name: "jasper_rtf",
-			hidden: true,
-			cls: "idv-dk-btn-e-pdf",
-			handler: function(panel) {
-				var p = this;
-				p.view.exportSheet.call(p.view, "JASPER_RTF");
-			},
-			scope: me
-		});
-		
-		mbtns.push({
-			name: "jasper_html",
-			hidden: true,
-			cls: "idv-dk-btn-e-pdf",
-			handler: function(panel) {
-				var p = this;
-				p.view.exportSheet.call(p.view, "JASPER_HTML");
-			},
-			scope: me
-		});
-		
-		mbtns.push({
-			name: "office_0",
-			hidden: true,
-			cls: "idv-dk-btn-e-off-0",
-			handler: function(panel) {
-				var p = this;
-				p.view.exportSheet.call(p.view, "OFFICE_0");
-			},
-			scope: me
-		});
-		
-		mbtns.push({
-			name: "office_1",
-			hidden: true,
-			cls: "idv-dk-btn-e-off-1",
-			handler: function(panel) {
-				var p = this;
-				p.view.exportSheet.call(p.view, "OFFICE_1");
-			},
-			scope: me
-		});
-		
-		mbtns.push({
-			name: "office_2",
-			hidden: true,
-			cls: "idv-dk-btn-e-off-1",
-			handler: function(panel) {
-				var p = this;
-				p.view.exportSheet.call(p.view, "OFFICE_2");
-			},
-			scope: me
-		});
-		
-		mbtns.push({
-			name: "office_3",
-			hidden: true,
-			cls: "idv-dk-btn-e-off-1",
-			handler: function(panel) {
-				var p = this;
-				p.view.exportSheet.call(p.view, "OFFICE_3");
-			},
-			scope: me
-		});
-		
-		mbtns.push({
-			name: "exp_csv",
-			hidden: true,
-			cls: "idv-dk-btn-e-csv",
-			handler: function(panel) {
-				var p = this;
-				p.view.downloadAllCSV.call(p.view, "CSV");
-			},
-			scope: me
-		});
-		
-		if (ig$.features && ig$.features.ml && me.objtype == "SHEET")
-		{
-			mbtns.push({
-				name: "ml_learn",
-				cls: "ig_ml_learn",
-				hidden: false,
-				handler: function(panel) {
-					var p = this;
-					p.view._Ip7/*ml_learn*/.call(p.view);
-				}
-			});
-		}
-		
+				
 		if (sheet_toolbar && sheet_toolbar.length)
 		{
 			$.each(sheet_toolbar, function(i, btn) {
@@ -333,18 +141,6 @@ IG$.dockingWidget.prototype = {
 			});
 		}
 		
-		mbtns.push({
-			name: "pivot",
-			hidden: true,
-			cls: "icon-toolbar-pivot",
-			handler: function(panel) {
-				var p = this.owner;
-				
-				p.configDock.call(p, panel.docid, "config_pivot");
-			},
-			scope: me
-		});
-
 		mbtns.push({
 			name: "config",
 			hidden: true,
@@ -379,7 +175,7 @@ IG$.dockingWidget.prototype = {
 		});
 		
 		$.each(mbtns, function(i, btn) {
-			var el = $("<div class='dock_button " + (btn.cls || "") + "'></div>").appendTo(btnarea).dselect();
+			var el = $("<div class='dock_button " + (btn.cls || "") + "'></div>").appendTo(btnarea);
 			btn.el = el;
 			if (btn.label)
 			{
@@ -655,8 +451,6 @@ IG$.dockingWidget.prototype = {
 			n, m,
 			pname;
 		
-		text = IG$._rrcs(me, text);
-		
 		n = text ? text.lastIndexOf("${") : -1;
 		
 		while (n > -1)
@@ -728,7 +522,7 @@ IG$.dockingWidget.prototype = {
 	setReportOption: function(sop) {
 		var me = this,
 			sval,
-			sheet_toolbar = ig$.sheet_toolbar,
+			sheet_toolbar,
 			st,
 			stbtn,
 			bmode = {},
@@ -736,20 +530,6 @@ IG$.dockingWidget.prototype = {
 			mvval,
 			msval, n,
 			bmap = [];
-
-		me.btnmap["exp_excel"].el.hide();
-		me.btnmap["exp_pdf"].el.hide();
-		me.btnmap["exp_csv"].el.hide();
-		me.btnmap["jasper_excel"].el.hide();
-		me.btnmap["jasper_pdf"].el.hide();
-		me.btnmap["jasper_docx"].el.hide();
-		me.btnmap["jasper_html"].el.hide();
-		me.btnmap["jasper_ppt"].el.hide();
-		me.btnmap["jasper_rtf"].el.hide();
-		me.btnmap["office_0"].el.hide();
-		me.btnmap["office_1"].el.hide();
-		me.btnmap["office_2"].el.hide();
-		me.btnmap["office_3"].el.hide();
 		
 		if (sop && sop.tb_prt_i)
 		{
@@ -779,37 +559,6 @@ IG$.dockingWidget.prototype = {
 		if (sop)
 		{
 			me.viewchange(sop.tb_vch);
-
-			if (sop.tb_prt && sop.tb_prt_i)
-			{
-				bmap = [
-				    {n: "excel", m: "exp_excel"},
-				    {n: "pdf", m: "exp_pdf"},
-				    {n: "csv", m: "exp_csv"},
-				    {n: "jasper_excel", m: "jasper_excel"},
-				    {n: "jasper_pdf", m: "jasper_pdf"},
-				    {n: "jasper_ppt", m: "jasper_ppt"},
-				    {n: "jasper_docx", m: "jasper_docx"},
-				    {n: "jasper_rtf", m: "jasper_rtf"},
-				    {n: "jasper_html", m: "jasper_html"},
-				    {n: "office_0", m: "office_0"},
-				    {n: "office_1", m: "office_1"},
-				    {n: "office_2", m: "office_2"},
-				    {n: "office_3", m: "office_3"}
-				];
-				
-				$.each(bmap, function(i, k) {
-					if (bmode[k.n])
-					{
-						me.btnmap[k.m].el.show();
-						
-						if (bmode[k.n].icon)
-						{
-							me.btnmap[k.m].el.addClass(bmode[k.n].icon);
-						}
-					}
-				});
-			}
 		}
 	},
 	
@@ -836,8 +585,8 @@ IG$.dockingWidget.prototype = {
 		me.bbox = {
 			x: os.left + body_container.scrollLeft(),
 			y: os.top + body_container.scrollTop(),
-			w: w,
-			h: h
+			w: w || me.lt.w,
+			h: h || me.lt.h
 		};
 		
 		IG$.x_10/*jqueryExtension*/._w(drop_proxy, w);

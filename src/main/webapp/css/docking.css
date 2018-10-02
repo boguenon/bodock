@@ -1,0 +1,177 @@
+.idv-doc-base {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	right: 0px;
+	bottom: 0px;
+}
+
+.idv-doc-layouter {
+}
+
+.idv-dk-main {
+	overflow: hidden;
+	background-color: #ffffff;
+}
+
+
+.idv-dk-btn-cnf {
+	background: url(../images/ingecep_iconset.png) -100px -360px no-repeat !important;
+}
+
+.idv-dk-btn-cnf:hover {
+	background: url(../images/ingecep_iconset_a.png) -100px -360px no-repeat !important;
+}
+
+.dock_title {
+	height: 24px;
+	font-size: 11px;
+	font-weight: bold;
+	line-height: 18px;
+	padding: 2px 5px 2px;
+	margin: 0px;
+	border: none;
+	background-color: #fafafa;
+	overflow: hidden;
+	color: #000;
+	border-bottom: 1px solid #e5ebf3;
+	box-sizing: border-box;
+	cursor: pointer;
+}
+
+.dock_title_btnarea {
+	position: absolute;
+	right: 5px;
+	background-color: #fff;
+}
+
+.dock_title_icon {
+	position: relative;
+	float: left;
+	width: 16px;
+	height: 16px;
+	margin-top: 2px;
+	background: url(../images/ingecep_iconset.png) -0px -540px no-repeat
+}
+
+.doc_title_selected .dock_title_icon {
+	background: url(../images/ingecep_iconset_b.png) -0px -540px no-repeat
+}
+
+.dock_title_text {
+	position: relative;
+	float: left;
+	margin-left: 10px;
+	/* margin-top: 3px; */
+	overflow: hidden;
+}
+
+.doc_title_normal {
+	position: relative;
+	background-color: #fafafa;
+}
+
+.doc_title_selected {
+	background-color: #fafafa;
+	color: #000;
+}
+
+.dock_title span {
+	vertical-align: middle;
+}
+
+.dock_content {
+	position: relative;
+	width: 100%;
+	box-sizing: border-box;
+	float: left;
+}
+
+.doc_active .igc-peditor {
+	background-color: #e5ebf3;
+}
+
+.dock-drop-proxy {
+	position: absolute;
+	background-color: transparent;
+}
+
+.dock-top {
+	position: absolute;
+	width: 40px;
+	height: 40px;
+	background-color: #EEE;
+	margin-bottom: 2px;
+}
+
+.dock-ind-over {
+	
+}
+
+.dock_inner {
+	position: absolute;
+	top: 4px;
+	left: 4px;
+	right: 4px;
+	bottom: 4px;
+	border: 1px solid #BBB;
+	overflow: hidden;
+	box-sizing: border-box;
+}
+
+.dock_cnt_tb {
+	position: relative;
+	width: 100%;
+	height: 100%;
+}
+
+.dock_cnt_tr {
+	height: 100%;
+}
+
+.dock_cnt_td {
+	overflow: hidden;
+}
+
+.dock-inside-wrap {
+	background-color: #222222;
+	opacity: .20;
+	z-index: 10;
+	filter:  alpha(opacity=20);
+}
+
+.dock-inside-guide {
+	position: absolute;
+	border: 1px solid #ff0000;
+	z-index: 15;
+}
+
+.dock-splitter {
+	position: absolute;
+	background-color: #f3f2f2;
+}
+
+.dock_button {
+	background-repeat: no-repeat;
+	float: left;
+	width: 16px;
+	height: 16px;
+	margin-right: 5px;
+	cursor:pointer;
+}
+
+.dock_close_button:before {
+	content: "\f410";
+}
+
+.dock_close_button:hover {
+	color: #fa7142;
+}
+
+.dock_maximize_button:before {
+	content: "\f2d0";
+}
+
+.dock_minimize:before {
+	content: "\f2d2";
+}

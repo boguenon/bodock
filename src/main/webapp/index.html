@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>BoDock</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	
+<link rel="stylesheet" type="text/css" href="./css/animate.css"/>
+<link rel="stylesheet" type="text/css" href="./css/jquery-ui.theme.min.css"/>
+<link rel="stylesheet" type="text/css" href="./css/main.css"/>
+<link rel="stylesheet" type="text/css" href="./css/docking.css"/>
+
+<script type="text/javascript" src="./js/jquery-1.12.0.min.js"></script>
+<script type="text/javascript" src="./js/jquery-ui-1.12.1.min.js"></script>
+
+<script type="text/javascript" src="./js/main.js"></script>
+<script type="text/javascript" src="./js/docking_widget.js"></script>
+<script type="text/javascript" src="./js/docking_splitter.js"></script>
+<script type="text/javascript" src="./js/docking_main.js"></script>
+
+</head>
+<body scroll="no">
+	<div id="loading-mask" style=""></div>
+	
+	<div id="loading">
+		<div class="cmsg">
+			<div class="msg">Loading bo...guenon</div>
+			<div class="lpb">
+				<div id="lpt" style="width: 10%;"></div>
+			</div>
+		</div>
+	</div>
+
+ 	<div id="main">
+		<div id="left_menu" class="side-menu">
+			<div class="mainHeader">
+				<div id="innerLogo" class="innerLogo">
+					<span class="ig-c-text" style="display: inline;">BOGUENON</span>
+					<div class="ig-c-button">
+					</div>
+				</div>
+				<ul class="mainNav" id="mainNav">
+					<li class="ig_mngr">
+						<span class="parent">L_MANAGEMENT*</span>
+						<div class="flyout">
+							<h3><span class="rightRaquoBlue">L_MANAGEMENT*</span></h3>
+							<div class="colwrapper">
+								<div class="column ig_sys">
+									<h6>L_SYSTEM*</h6>
+									<ul class="ig_sys">
+										<li class="chevronLink ig_user"><span>L_USER_MANAGEMENT*</span></li>
+										
+									</ul>
+								</div>
+							</div>
+						</div>
+					</li>
+				</ul>
+				<div class="searchForm" id="searchForm" style="display: block;">
+				<input type="text" id="tsearch" placeholder="Search" class="searchKeyword" maxlength="1000" autocomplete="off">
+				<span class="searchGo"></span>
+				</div>
+			</div>
+		</div>
+		<div id="maincontent">
+		</div>
+		<div id="widgets">
+			<ul>
+				<li botype="widget"><span>Tab Panel</span></li>
+				<li botype="widget"><span>Panel</span></li>
+				<li botype="widget"><span>TextArea</span></li>
+			</ul>
+		</div>
+	</div>
+</body>
+</html>

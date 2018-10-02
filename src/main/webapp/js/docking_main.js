@@ -1,3 +1,44 @@
+IG$.x_10/*jqueryExtension*/ = {
+	_w: function(jdom, value) {
+		var dom = jdom && jdom.length ? jdom[0] : null,
+			r = 0;
+		
+		if (dom)
+		{
+			if (typeof(value) == "undefined")
+			{
+				r = dom.offsetWidth || dom.innerWidth || dom.clientWidth;
+				r = isNaN(r) ? 0 : r;
+			}
+			else
+			{
+				jdom.width(value);
+			}
+		}
+		
+		return r;
+	},
+	_h: function(jdom, value) {
+		var dom = jdom && jdom.length ? jdom[0] : null,
+			r = 0;
+		
+		if (dom)
+		{
+			if (typeof(value) == "undefined")
+			{
+				r = dom.offsetHeight || dom.innerHeight || dom.clientHeight;
+				r = isNaN(r) ? 0 : r;
+			}
+			else
+			{
+				jdom.height(value);
+			}
+		}
+		
+		return r;
+	}
+}
+
 // container code
 IG$.boDockZone = function(container, cobj) {
 	var me = this,
@@ -72,16 +113,14 @@ IG$.boDockZone.prototype = {
 		
 		drop_proxy= me.drop_proxy = $("<div class='dock-inside-wrap'></div>")
 			.css({position: "absolute", top: 0, left: 0})
-			.appendTo(me.body_container)
-			.dselect();
+			.appendTo(me.body_container);
 		
 		drop_proxy.hide();
 		
 		me.dockinsg = $("<div class='dock-inside-guide'></div>")
 			.css({position: "absolute"})
 			.appendTo(me.body_container)
-			.hide()
-			.dselect();
+			.hide();
 		
 		me.bodylist = {};
 		
@@ -95,132 +134,52 @@ IG$.boDockZone.prototype = {
 			children: []
 		};
 		
-		// me.configDropZone();
+		me.configDropZone();
 	},
 	
 	configDropZone: function() {
-		var owner = this,
-			el = owner.body_container[0];
+		var me = this,
+			el = me.body_container;
 		
-        if ($s.create && $s.dropzone)
-        {
-            owner.dropZone = $s.create($s.dropzone, el, {
-                ddGroup: '_I$RD_G_',
-                
-                nodeouttimer: -1,
-                
-                notifyOut : function(dd, e, data){
-                    var me = this;
-                    if(me.lastOverNode){
-                        me.onNodeOut(me.lastOverNode, dd, e, data);
-                        me.lastOverNode = null;
-                    }
-                    
-                    grid.isDragging = false;
-                    if (!grid.hideDropFeedback)
-                        return;
-                    
-                    grid.hideDropFeedback.call(grid, e);
-                    
-                    if (me.accept == true && me.pivotmove == true)
-                    {
-                        if (grid.sheetobj)
-                        {
-                            if (me.nodeouttimer > -1)
-                            {
-                                clearTimeout(me.nodeouttimer);
-                            }
-                            
-                            me.nodeouttimer = setTimeout(function() {
-                                grid.hideDropFeedback.call(grid, e);
-                            }, 100);
-                            // grid.sheetobj.procUpdateReport.call(grid.sheetobj);
-                        }
-                    }
-                },
-                
-                onNodeEnter : function(target, dd, e, data){
-                    var me = this,
-                        i,
-                        dt, dttype,
-                        hasitem = false,
-                        accept = false,
-                        ui;
-                        
-                    if (data.records && data.records.length > 0)
-                    {
-                        dt = data.records[0].get("type");
-                        
-                        if (dt == "Report")
-                        {
-                            accept = true;
-                        }
-                    }
-                    else if (data.cellData)
-                    {
-                        dt = data.cellData;
-                        accept = true;
-                    }
-                    
-                    if (accept)
-                    {
-                        owner.showDropProxy.call(owner, e, ui);
-                    }
-                                    
-                    me.accept = accept;
-                },
-                onNodeOut : function(target, dd, e, data){
-                    
-                },
-                onNodeOver : function(target, dd, e, data){
-                    var me = this,
-                        dt,
-                        ret,
-                        ui;
-                        
-                    if (window.Ext)
-                    {
-                        ret = ((me.accept == true) ? Ext.dd.DropZone.prototype.dropAllowed : Ext.dd.DropZone.prototype.dropNotAllowed);
-                    }
-                    else
-                    {
-                        ret = me.accept;
-                    }
-                    if (me.accept == true)
-                    {
-                        if (data.records && data.records.length > 0)
-                        {
-                            dt = data.records[0].data;
-                        }
-                        else
-                        {
-                            dt = data.cellData;
-                        }
-                        
-                        owner.dragOver.call(owner, e.browserEvent, ui);
-                    }
-                    return ret;
-                },
-                onNodeDrop : function(target, dd, e, data){
-                    var me = this;
-                    if (me.accept == true)
-                    {
-                        if (data.records && data.records.length > 0)
-                        {
-                            dt = data.records[0].data;
-                            grid.sobj.onDropRecord.call(grid.sobj, e, dt);
-                        }
-                        else
-                        {
-                            dt = data.cellData;
-                        }
-                    }
-                    
-                    me.accept = false;
-                    return true;
-                }
-            });
-        }
+		el.droppable({
+			activate: function(event, ui){
+				var botype = ui.draggable.attr("botype");
+				
+				if (botype == "widget")
+				{
+					me._accept = {
+						is_new: true,
+						widget: "Report"
+					};
+					
+					me.showDropProxy.call(me, event, ui, me._accept);
+				}
+			},
+			out : function(event, ui){
+				me._accept = null;
+			},
+			over : function(event, ui){
+				var dt,
+					ret,
+					ui;
+				
+				if (me._accept)
+				{
+					ret = true;
+					me.dragOver.call(me, event, ui, me._accept);
+				}
+				return ret;
+			},
+			drop : function(event, ui){
+				if (me._accept)
+				{
+					me.l18/*dragStop*/.call(me, event, ui, me._accept);
+				}
+				
+				me._accept = null;
+				return true;
+			}
+		});
 	},
 	
 	customLoad: function(visible, mview) {
@@ -321,7 +280,7 @@ IG$.boDockZone.prototype = {
 			iscontainer,
 			i, obj;
 			
-		sheet = ctrls[_pcontainer.docid] || new IG$.sheetfiltercomp(null);
+		sheet = ctrls[_pcontainer.docid] || {};
 		ubody = me.appendWidgetBox.call(me, _pcontainer.docid,  
 			{
 				width: (_pcontainer.width ? parseInt(_pcontainer.width) : null), 
@@ -479,77 +438,20 @@ IG$.boDockZone.prototype = {
 			view,
 			sheet = ctrls[ubody.docid];
 		
-		if (ubody.objtype == "FILTER")
-    	{
-    		if (report.__dreg && report.__dreg[sheet.docid])
-    		{
-    			view = report.__dreg[sheet.docid].fobj;
-    			view.report = report;
-    			view.sheetoption = sheet;
-    			view.dzone = me;
-    			view.init_f.call(view);
-    			ubody.hidden = true;
-    		}
-    		else
-    		{
-    			view = new IG$.dynFilterView(ubody.box_container, sheet, report);
-    		}
-    		view.callback = new IG$._I3d/*callBackObj*/(report, report.onFilterUpdate);
-    	}
-    	else if (ubody.objtype == "TEXT")
-    	{
-    		view = new IG$.rfText(ubody.box_container, sheet);
-    		ubody.box_container.trigger("i_ready");
-    	}
-    	else if (ubody.objtype == "NAVI")
-    	{
-    		view = new IG$.rfNavi(ubody.box_container, sheet);
-    		ubody.box_container.trigger("i_ready");
-    	}
-    	else if (ubody.objtype == "PANEL" || ubody.objtype == "")
-    	{
-    		view = new IG$.rfBlankPanel(ubody.box_container, sheet);
-    		ubody.box_container.trigger("i_ready");
-    	}
-    	else if (ubody.objtype == "TAB")
-    	{
-    		view = new IG$.rfTabPanel(ubody.box_container, sheet, me, report);
-    		ubody.box_container.trigger("i_ready");
-    	}
-    	else if (ubody.objtype == "RPT_VIEW")
-    	{
-    		view = new IG$.rfReportViewer(ubody.box_container, sheet, me, report);
-    		view.validateItems.call(view, undefined, true);
-    	}
-    	else if (ubody.objtype == "SHEET")
-    	{
-    		view = null;
-    	}
-    	else
-    	{
-    		view = null;
-    		ubody.box_container.trigger("i_ready");
-    	}
+    	ubody.box_container.trigger("i_ready");
     	
     	if (ubody.objtype)
     	{
     		ubody.box.addClass("igc-" + ubody.objtype.toLowerCase() + "-cnt");
     	}
     	
-    	if (view)
-    	{
-    		view.sheetoption = sheet;
-    		ubody.view = view;
-    		
-    		if (ubody.objtype == "FILTER")
-    		{
-    			ubody.setReportOption.call(ubody, sheet);
-    			ubody.box_container.bind("export_sheet", function(e, view, opt) {
-    				var panel = me.cobj;
-    				panel.exportToFile.call(panel, opt.filetype.toUpperCase(), false, view);
-    			});
-    		}
-    	}
+		if (view)
+		{
+			view.sheetoption = sheet;
+			ubody.view = view;
+		}
+		
+		ubody.setReportOption.call(ubody, sheet);
 	},
 	
 	isContainer: function(objtype) {
@@ -1241,10 +1143,6 @@ IG$.boDockZone.prototype = {
 			__pp, __gpp,
 			_mp;
 						
-		btnmap["config"].el[mshow]();
-		btnmap["pivot"].el[mshow]();
-		btnmap["close"].el[mshow]();
-		
 		__pp = item.parent;
 		
 		while (__pp && !ishidden)
@@ -1532,7 +1430,7 @@ IG$.boDockZone.prototype = {
 		}
 	},
 	
-	dragOver: function(event, ui) {
+	dragOver: function(event, ui, dragitem) {
 		var me = this,
 			pt = {
 				x: event.pageX,
@@ -1550,15 +1448,22 @@ IG$.boDockZone.prototype = {
 				top: body_container.scrollTop(),
 				left: body_container.scrollLeft()
 			};
-			
-		for (i=0; i < me.items.length; i++)
+		
+		if (dragitem)
 		{
-			item = me.items[i];
-			item.dropOut.call(item);
-			
-			if (item.dragging == true)
+			dragui = dragitem;
+		}
+		else
+		{
+			for (i=0; i < me.items.length; i++)
 			{
-				dragui = item;
+				item = me.items[i];
+				item.dropOut.call(item);
+				
+				if (item.dragging == true)
+				{
+					dragui = item;
+				}
 			}
 		}
 			
@@ -1663,7 +1568,7 @@ IG$.boDockZone.prototype = {
 		return r;
 	},
 	
-	l18/*dragStop*/: function(event, ui) {
+	l18/*dragStop*/: function(event, ui, dragitem) {
 		var me = this,
 			pt = {
 				x: event.pageX,
@@ -1687,14 +1592,21 @@ IG$.boDockZone.prototype = {
 			}, __iserror = 0,
 			_pnode, _pproc,
 			_d, is_before = 0, _nc, _nc2, seq, cpp;
-			
-		for (i=0; i < me.items.length; i++)
+		
+		if (dragitem)
 		{
-			if (me.items[i].dragging == true)
+			dragui = dragitem;
+		}
+		else
+		{
+			for (i=0; i < me.items.length; i++)
 			{
-				dragui = me.items[i];
-				cindex = i;
-				break;
+				if (me.items[i].dragging == true)
+				{
+					dragui = me.items[i];
+					cindex = i;
+					break;
+				}
 			}
 		}
 		
@@ -1733,6 +1645,50 @@ IG$.boDockZone.prototype = {
 		}
 			
 		me.hideDropProxy();
+		
+		if (dragui.is_new == true)
+		{
+			var _root = me._root;
+			_root.children = _root.children || [];
+			
+			_nc = {
+				objtype: dragui.widget,
+				docid: null,
+				_direction: 0,
+				parent: _root,
+				width: 100,
+				height: 100
+			};
+			
+			_root.children.push(_nc);
+			
+			ubody = me.appendWidgetBox.call(me, null, {
+				width: (_nc.width ? parseInt(_nc.width) : null), 
+				height: (_nc.height ? parseInt(_nc.height) : null),
+				draggable: me.draggable
+			}, dragui.widget);
+			
+			_nc.docid = ubody.docid;
+			ubody.objtype = _nc.objtype;
+			
+			_nc.lt = {
+				pos: {
+					x: 0,
+					y: 0,
+					w: 0,
+					h: 0
+				},
+				ubody: ubody
+			};
+			
+			ubody._pc = _nc;
+			
+			ubody.validateProperty.call(ubody);
+			
+			dragui = ubody;
+			
+			me.docitems[dragui.docid] = _nc;
+		}
 		
 		if (item && dhit != "none")
 		{

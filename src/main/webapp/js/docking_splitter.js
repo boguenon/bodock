@@ -27,23 +27,16 @@ IG$.sp/*docksplit*/.prototype = {
 		me.panel._SP = me.panel._SP || [];
 		me.panel._SP.push(me);
 		
-		if (!ig$._fix_split)
-		{
-			me.spui.css({cursor: cursor, "user-select": "none", "-webkit-user-select": "none","-khtml-user-select": "none", "-moz-user-select": "none"});
-			me.spui.bind("mousedown", function(event) {
-				me.l2/*_startDrag*/.call(me, event);
-			});
-		}
-		else
-		{
-			me.spui.css({"backgroundColor": "transparent"});
-		}
+		me.spui.css({cursor: cursor, "user-select": "none", "-webkit-user-select": "none","-khtml-user-select": "none", "-moz-user-select": "none"});
+		me.spui.bind("mousedown", function(event) {
+			me.l2/*_startDrag*/.call(me, event);
+		});
 	},
 	
 	setV: function(v) {
 		var me = this;
 		
-		if (v && !ig$._fix_split)
+		if (v)
 		{
 			me.spui.show();
 		}
